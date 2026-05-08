@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -30,11 +30,7 @@ describe("tool template creation", () => {
     const root = await mkdtemp(path.join(tmpdir(), "mcp-template-"));
     const outputDir = path.join(root, "src", "tools");
 
-    await createToolTemplate(
-      { name: "my_tool", description: "A tool" },
-      [root],
-      outputDir
-    );
+    await createToolTemplate({ name: "my_tool", description: "A tool" }, [root], outputDir);
 
     const typesText = await readFile(path.join(outputDir, "types.ts"), "utf8");
     expect(typesText).toContain("ToolRegistrar");
@@ -46,7 +42,7 @@ describe("tool template creation", () => {
     await mkdir(outputDir, { recursive: true });
     const typesPath = path.join(outputDir, "types.ts");
     const original = "// existing types\n";
-    await import("node:fs/promises").then(({ writeFile }) => writeFile(typesPath, original));
+    await writeFile(typesPath, original);
 
     await createToolTemplate(
       { name: "another_tool", description: "Another tool" },

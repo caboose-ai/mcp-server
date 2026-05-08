@@ -83,6 +83,8 @@ function toTitle(name: string): string {
     .join(" ");
 }
 
+// Keep this in sync with templates/types.ts, which serves as the human-readable
+// canonical example. Inlining avoids a runtime dependency on the template file path.
 const TYPES_CONTENT = `import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 export type ToolRegistrar = (server: McpServer) => void;
